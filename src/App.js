@@ -4,8 +4,8 @@ import axios from "axios";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import React from "react";
-import Card from "./component/Card";
 import Alert from "react-bootstrap/Alert";
+import Weather from "./component/Weather";
 class App extends React.Component {
   constructor() {
     super();
@@ -16,6 +16,8 @@ class App extends React.Component {
       mapImage: {},
       showalert: false,
       errMsg: "",
+      showWeather: false,
+      weatherData: {},
     };
   }
   cityName = (e) => {
@@ -28,20 +30,26 @@ class App extends React.Component {
     try {
       const url = ` https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_KEY_LOCATIONIQ}&q=${this.state.city_name}&format=json`;
       const locationIQRES = await axios.get(url);
+      const weatherUrl = `http://localhost:3020/weather?city_name=${this.state.city_name}`;
+      const weatherRes = await axios.get(weatherUrl);
       this.setState({
         location: locationIQRES.data[0],
         showalert: false,
         ShowLocation: true,
+        showWeather: true,
+        weatherData: weatherRes,
       });
     } catch (err) {
       this.setState({
         errMsg: err.message, //||err.response.data.error
         showalert: true,
         ShowLocation: false,
+        showWeather: false,
       });
     }
   };
   render() {
+    console.log(this.state.weatherData);
     return (
       <div>
         {this.state.showalert && (
@@ -63,7 +71,12 @@ class App extends React.Component {
           </Button>
         </Form>
 
-        {this.state.ShowLocation && <Card location={this.state.location} />}
+        {this.state.ShowLocation && (
+          <Weather
+            location={this.state.location}
+            weatherData={this.state.weatherData}
+          />
+        )}
       </div>
     );
   }
