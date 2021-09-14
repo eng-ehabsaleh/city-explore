@@ -32,6 +32,8 @@ class App extends React.Component {
       const locationIQRES = await axios.get(url);
       const weatherUrl = `http://localhost:3020/weather?city_name=${this.state.city_name}`;
       const weatherRes = await axios.get(weatherUrl);
+      console.log(url);
+      console.log(weatherRes);
       this.setState({
         location: locationIQRES.data[0],
         showalert: false,
@@ -49,7 +51,10 @@ class App extends React.Component {
     }
   };
   render() {
+    console.log(this.state.location);
     console.log(this.state.weatherData);
+    console.log(this.state.weatherData);
+
     return (
       <div>
         {this.state.showalert && (

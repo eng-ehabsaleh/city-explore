@@ -13,8 +13,14 @@ class Cardy extends React.Component {
             <Card.Title>{this.props.location.display_name}</Card.Title>
             <Card.Text>the lat: {this.props.location.lat}</Card.Text>
             <Card.Text>the lon: {this.props.location.lon}</Card.Text>
-            <Card.Text> {this.props.weatherData.data[1].discription}</Card.Text>
-            <Card.Text> {this.props.weatherData.data[1].date}</Card.Text>
+            {this.props.weatherData.data.map((ele) => {
+              return (
+                <>
+                  <Card.Text> {ele.discription}</Card.Text>
+                  <Card.Text> {ele.date}</Card.Text>
+                </>
+              );
+            })}
           </Card.Body>
         </Card>
       </>
